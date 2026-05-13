@@ -1,13 +1,14 @@
-import './App.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { Col, Container, Row } from 'react-bootstrap'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
-import CartIndicator from './components/CartIndicator'
-import BookStore from './components/BookStore'
-import Cart from './components/Cart'
-import Footer from './components/Footer'
-import { Provider } from 'react-redux'
-import store from './redux/store'
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Col, Container, Row } from "react-bootstrap";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import CartIndicator from "./components/CartIndicator";
+import BookStore from "./components/BookStore";
+import Cart from "./components/Cart";
+import Footer from "./components/Footer";
+import { Provider } from "react-redux";
+import store from "./redux/store";
+import Favorites from "./components/Favorites";
 
 const App = () => {
   return (
@@ -21,19 +22,23 @@ const App = () => {
               </Link>
             </Col>
             <CartIndicator />
+            <Link to="/favorites" className="text-end mb-3">
+              Preferiti
+            </Link>
           </Row>
           <Routes>
             <Route path="/" element={<BookStore />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/favorites" element={<Favorites />} />
           </Routes>
           <Footer />
         </Container>
       </BrowserRouter>
     </Provider>
-  )
-}
+  );
+};
 
-export default App
+export default App;
 
 // 1) si fa un reducer in redux/reducers/index.js
 // 2) si crea lo store in redux/store/index.js

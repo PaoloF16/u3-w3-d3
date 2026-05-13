@@ -1,10 +1,15 @@
-import { Col, Row, Button } from 'react-bootstrap'
-import { FaShoppingCart } from 'react-icons/fa'
-import { useDispatch } from 'react-redux'
+import { Col, Row, Button } from "react-bootstrap";
+import { FaShoppingCart } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 const BookDetail = ({ bookSelected }) => {
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
+  const favorites = useSelector((storeRedux) => {
+    return storeRedux.favorites.content;
+  });
+  const isFavorite = bookSelected
+    ? favorites.some((book) => book.id === bookSelected.id)
+    : false;
   return (
     <div className="mt-3 mb-4 mb-lg-0">
       {bookSelected ? (
@@ -37,13 +42,26 @@ const BookDetail = ({ bookSelected }) => {
                 className="d-flex align-items-center"
                 onClick={() => {
                   dispatch({
-                    type: 'ADD_TO_CART', // si segue la nomenclatura delle costanti, es. URL
+                    type: "ADD_TO_CART", // si segue la nomenclatura delle costanti, es. URL
                     payload: bookSelected,
-                  })
+                  });
                 }}
               >
                 <span className="me-2">AGGIUNGI AL</span>
                 <FaShoppingCart />
+              </Button>
+              <Button
+                variant={isFavorite ? "success" : "outline-success"}
+                className="d-flex align-items-center mt-3"
+                disabled={isFavorite}
+                onClick={() => {
+                  dispatch({
+                    type: "ADD_TO_FAVORITES",
+                    payload: bookSelected,
+                  });
+                }}
+              >
+                {isFavorite ? "GIÀ NEI PREFERITI" : "AGGIUNGI AI PREFERITI"}
               </Button>
             </Col>
           </Row>
@@ -56,7 +74,7 @@ const BookDetail = ({ bookSelected }) => {
         </Row>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default BookDetail
+export default BookDetail;

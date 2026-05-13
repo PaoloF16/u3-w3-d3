@@ -12,8 +12,10 @@
 // poichè il reducer tiene in vita lo stato dell'applicativo, dobbiamo crearne noi una versione iniziale
 const initialState = {
   cart: {
-    // qui dentro salviamo tutte le informazioni relative al concetto "carrello" nell'app
-    content: [], // intanto facciamo il vero e proprio array che conterrà i libri
+    content: [],
+  },
+  favorites: {
+    content: [],
   },
 }
 
@@ -63,7 +65,36 @@ const mainReducer = (state = initialState, action) => {
           ),
           // devo creare un nuovo content in cui c'è un elemento di meno rispetto al content attuale
         },
+        
       }
+      case 'ADD_TO_FAVORITES': {
+  const alreadyFavorite = state.favorites.content.some(
+    (libro) => libro.id === action.payload.id,
+  )
+
+  if (alreadyFavorite) {
+    return state
+  }
+
+  return {
+    ...state,
+    favorites: {
+      ...state.favorites,
+      content: [...state.favorites.content, action.payload],
+    },
+  }
+}
+
+case 'REMOVE_FROM_FAVORITES':
+  return {
+    ...state,
+    favorites: {
+      ...state.favorites,
+      content: state.favorites.content.filter(
+        (libro) => libro.id !== action.payload,
+      ),
+    },
+  }
 
     default:
       // anche il caso di default, come tutti gli altri, avrà lo stesso scopo: ritornare il nuovo stato dell'app!
